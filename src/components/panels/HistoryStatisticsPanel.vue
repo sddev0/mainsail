@@ -27,6 +27,10 @@
                                     <td class="text-right">{{ Math.round(selectedFilamentUsed / 100) / 10 }} m</td>
                                 </tr>
                                 <tr>
+                                    <td>{{ $t('History.SelectedEnergyUsed') }}</td>
+                                    <td class="text-right">{{ formatEnergy(selectedEnergyUsed) }}</td>
+                                </tr>
+                                <tr>
                                     <td>{{ $t('History.SelectedJobs') }}</td>
                                     <td class="text-right">{{ selectedJobs.length }}</td>
                                 </tr>
@@ -47,6 +51,10 @@
                                 <tr>
                                     <td>{{ $t('History.TotalFilamentUsed') }}</td>
                                     <td class="text-right">{{ Math.round(totalFilamentUsed / 100) / 10 }} m</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.TotalEnergyUsed') }}</td>
+                                    <td class="text-right">{{ formatEnergy(totalEnergyUsed) }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.TotalJobs') }}</td>
@@ -89,11 +97,15 @@
                 </v-col>
                 <v-col class="col-12 col-sm-12 col-md-4">
                     <history-filament-usage v-if="toggleChart === 'filament_usage'"></history-filament-usage>
+                    <history-energy-usage v-if="toggleChart === 'energy_usage'"></history-energy-usage>
                     <history-printtime-avg v-else-if="toggleChart === 'printtime_avg'"></history-printtime-avg>
                     <div class="text-center mt-3">
                         <v-btn-toggle v-model="toggleChart" small mandatory>
                             <v-btn small value="filament_usage">
                                 {{ $t('History.FilamentUsage') }}
+                            </v-btn>
+                            <v-btn small value="energy_usage">
+                                {{ $t('History.EnergyUsage') }}
                             </v-btn>
                             <v-btn small value="printtime_avg">
                                 {{ $t('History.PrinttimeAvg') }}
@@ -111,12 +123,13 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
+import HistoryEnergyUsage from '@/components/charts/HistoryEnergyUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
 @Component({
-    components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
+    components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryEnergyUsage, HistoryAllPrintStatusChart },
 })
 export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     mdiChartAreaspline = mdiChartAreaspline
@@ -192,6 +205,22 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
         return filamentUsed
     }
 
+    get totalEnergyUsed() {
+        return 'total_energy_used' in this.$store.state.server.history.job_totals
+            ? this.$store.state.server.history.job_totals.total_energy_used
+            : 0
+    }
+
+    get selectedEnergyUsed() {
+        let energyUsed = 0
+
+        this.selectedJobs.forEach((job: ServerHistoryStateJob) => {
+            energyUsed += job.energy_used
+        })
+
+        return energyUsed
+    }
+
     get totalJobsCount() {
         return 'total_jobs' in this.$store.state.server.history.job_totals
             ? this.$store.state.server.history.job_totals.total_jobs
@@ -242,6 +271,12 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
         }
 
         return '--'
+    }
+
+    formatEnergy(totalWattHours: number) {
+        if(totalWattHours > 1000) return (totalWattHours / 1000).toFixed(2) + ' kWh'
+
+        return Math.round(totalWattHours) + ' Wh'
     }
 }
 </script>

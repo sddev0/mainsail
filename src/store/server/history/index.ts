@@ -12,6 +12,7 @@ export const getDefaultState = (): ServerHistoryState => {
             total_time: 0,
             total_print_time: 0,
             total_filament_used: 0,
+            total_energy_used: 0,
             longest_job: 0,
             longest_print: 0,
         },

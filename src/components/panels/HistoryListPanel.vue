@@ -714,6 +714,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'length',
             },
             {
+                text: this.$t('History.EnergyUsed'),
+                value: 'energy_used',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'energy'
+            },
+            {
                 text: this.$t('History.FirstLayerExtTemp'),
                 value: 'first_layer_extr_temp',
                 align: 'left',
@@ -1128,6 +1136,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
                     return value?.toFixed(2) + ' mm'
+
+                case 'energy':
+                    if (value > 1000) return (value / 1000).toFixed(2) + ' kWh'
+
+                    return value?.toFixed(0) + ' Wh'
 
                 default:
                     return value

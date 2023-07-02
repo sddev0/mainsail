@@ -5,6 +5,7 @@ export interface ServerHistoryState {
         total_time: number
         total_print_time: number
         total_filament_used: number
+        total_energy_used: number
         longest_job: number
         longest_print: number
     }
@@ -16,6 +17,7 @@ export interface ServerHistoryStateJob {
     exists: boolean
     end_time: number
     filament_used: number
+    energy_used: number
     filename: string
     // eslint-disable-next-line
     metadata: any

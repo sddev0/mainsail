@@ -232,6 +232,46 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         })
     },
 
+    getEnergyUsageArray(state, getters, rootState) {
+        // eslint-disable-next-line
+        const output: any = []
+        const startDate = new Date()
+        startDate.setTime(startDate.getTime() - 60 * 60 * 24 * 14 * 1000)
+        startDate.setHours(0, 0, 0, 0)
+
+        let jobsFiltered = [
+            ...state.jobs.filter((job) => new Date(job.start_time * 1000) >= startDate && job.energy_used > 0),
+        ]
+        if (rootState.gui.view.history.selectedJobs.length)
+            jobsFiltered = [
+                ...rootState.gui.view.history.selectedJobs.filter(
+                    (job: ServerHistoryStateJob) =>
+                        new Date(job.start_time * 1000) >= startDate && job.energy_used > 0
+                ),
+            ]
+
+        for (let i = 0; i <= 14; i++) {
+            const tmpDate = new Date()
+            tmpDate.setTime(startDate.getTime() + 60 * 60 * 24 * i * 1000)
+
+            output.push([new Date(tmpDate).setHours(0, 0, 0, 0), 0])
+        }
+
+        if (jobsFiltered.length) {
+            jobsFiltered.forEach((current) => {
+                const currentStartDate = new Date(current.start_time * 1000).setHours(0, 0, 0, 0)
+                // eslint-disable-next-line
+                const index = output.findIndex((element: any) => element[0] === currentStartDate)
+                if (index !== -1) output[index][1] += Math.round(current.energy_used) / 1000
+            })
+        }
+
+        // eslint-disable-next-line
+        return output.sort((a: any, b: any) => {
+            return b[0] - a[0]
+        })
+    },
+
     getPrinttimeAvgArray(state, getters, rootState) {
         const output = [0, 0, 0, 0, 0]
         const startDate = new Date(new Date().getTime() - 60 * 60 * 24 * 14 * 1000)
