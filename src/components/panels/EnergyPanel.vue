@@ -28,14 +28,14 @@
                         </td>
                         <td class="name px-2">{{ capitalize(meter.name) }}</td>
                         <td class="power px-2">{{ formatPower(meter.power) }}</td>
-                        <td class="total px-2">{{ formatEnergy(meter.consumption.total) }}</td>
+                        <td class="total" :class="activeJob ? 'px-2' : 'pl-2'">{{ formatEnergy(meter.consumption.total) }}</td>
                         <td v-if="activeJob" class="job pl-2">{{ formatEnergy(meter.consumption.current_job) }}</td>
                     </tr>
                     <tr v-if="hasMoreThanOneMeter">
                         <td class="icon">&nbsp;</td>
                         <td class="name px-2">Total</td>
                         <td class="power px-2">{{ formatPower(totalMeter.power) }}</td>
-                        <td class="total px-2">{{ formatEnergy(totalMeter.consumption.total) }}</td>                        
+                        <td class="total" :class="activeJob ? 'px-2' : 'pl-2'">{{ formatEnergy(totalMeter.consumption.total) }}</td>                        
                         <td v-if="activeJob" class="job pl-2">{{ formatEnergy(totalMeter.consumption.current_job) }}</td>
                     </tr>
                 </tbody>
