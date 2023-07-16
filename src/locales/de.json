@@ -535,6 +535,9 @@
         "Headline": "Manuelle Messung"
     },
     "Panels": {
+        "EnergyPanel": {
+            "Headline": "Energie"
+        },
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
             "CleanNozzle": "Düse reinigen",

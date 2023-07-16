@@ -10,6 +10,7 @@ import {
     mdiEngine,
     mdiGamepad,
     mdiInformation,
+    mdiLightningBolt,
     mdiPrinter3dNozzle,
     mdiThermometerLines,
     mdiWebcam,
@@ -67,6 +68,8 @@ export default class DashboardMixin extends BaseMixin {
                 return mdiEngine
             case 'extruder-control':
                 return mdiPrinter3dNozzle
+            case 'energy':
+                return mdiLightningBolt
 
             default:
                 return mdiInformation

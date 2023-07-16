@@ -39,7 +39,7 @@ export default new Vuex.Store({
         gui,
         farm,
         editor,
-        gcodeviewer,
+        gcodeviewer
     },
     getters: getters,
     mutations: mutations,

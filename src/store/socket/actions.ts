@@ -88,6 +88,10 @@ export const actions: ActionTree<SocketState, RootState> = {
                 commit('server/power/setStatus', payload.params[0], { root: true })
                 break
 
+            case 'notify_energy_changed':
+                commit('server/energymeter/setMeter', payload.params[0], { root: true })
+                break
+
             case 'notify_update_response':
                 commit('server/updateManager/addUpdateResponse', payload.params[0], { root: true })
                 break

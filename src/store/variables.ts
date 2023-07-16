@@ -35,6 +35,7 @@ export const initableServerComponents = [
     'jobQueue',
     'announcements',
     'spoolman',
+    'energymeter'
 ]
 
 /*
@@ -91,6 +92,7 @@ export const allDashboardPanels = [
     'spoolman',
     'temperature',
     'webcam',
+    'energy'
 ]
 
 export const thumbnailSmallMin = 30
