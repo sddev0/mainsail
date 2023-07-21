@@ -7,10 +7,6 @@ export interface MachineEnergyStateMeter {
     power: number
     color: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'custom'
     icon?: string
-    consumption: MachineEnergyConsumption
-}
-
-export interface MachineEnergyConsumption {
-    total: number
-    current_job: number
+    total_consumption: number
+    current_job_consumption?: number
 }

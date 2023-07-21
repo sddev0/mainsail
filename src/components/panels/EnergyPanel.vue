@@ -28,15 +28,15 @@
                         </td>
                         <td class="name px-2">{{ capitalize(meter.name) }}</td>
                         <td class="power px-2">{{ formatPower(meter.power) }}</td>
-                        <td class="total" :class="activeJob ? 'px-2' : 'pl-2'">{{ formatEnergy(meter.consumption.total) }}</td>
-                        <td v-if="activeJob" class="job pl-2">{{ formatEnergy(meter.consumption.current_job) }}</td>
+                        <td class="total" :class="activeJob ? 'px-2' : 'pl-2'">{{ formatEnergy(meter.total_consumption) }}</td>
+                        <td v-if="activeJob" class="job pl-2">{{ formatEnergy(meter.current_job_consumption) }}</td>
                     </tr>
                     <tr v-if="hasMoreThanOneMeter">
                         <td class="icon">&nbsp;</td>
                         <td class="name px-2">Total</td>
                         <td class="power px-2">{{ formatPower(totalMeter.power) }}</td>
-                        <td class="total" :class="activeJob ? 'px-2' : 'pl-2'">{{ formatEnergy(totalMeter.consumption.total) }}</td>                        
-                        <td v-if="activeJob" class="job pl-2">{{ formatEnergy(totalMeter.consumption.current_job) }}</td>
+                        <td class="total" :class="activeJob ? 'px-2' : 'pl-2'">{{ formatEnergy(totalMeter.total_consumption) }}</td>                        
+                        <td v-if="activeJob" class="job pl-2">{{ formatEnergy(totalMeter.current_job_consumption) }}</td>
                     </tr>
                 </tbody>
             </v-simple-table>
@@ -61,7 +61,7 @@ export default class EnergyPanel extends Mixins(BaseMixin) {
 
     capitalize = capitalize
 
-    get totalMeter() {
+    get totalMeter(): MachineEnergyStateMeter {
         return this.$store.getters['server/energymeter/getTotalMeter']
     }
 
@@ -83,7 +83,9 @@ export default class EnergyPanel extends Mixins(BaseMixin) {
         return watt.toFixed(1) + ' W'
     }
 
-    formatEnergy(wattHours: number) {
+    formatEnergy(wattHours?: number) {
+        if(wattHours === undefined) return ''
+
         if(wattHours >= 1000) return (wattHours / 1000).toFixed(2) + ' kWh'
 
         return Math.round(wattHours) + ' Wh'
