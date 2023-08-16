@@ -358,6 +358,13 @@
                                 <v-col class="text-right">{{ Math.round(detailsDialog.item.filament_used) }} mm</v-col>
                             </v-row>
                         </template>
+                        <template v-if="detailsDialog.item.energy_used > 0">
+                            <v-divider class="my-3"></v-divider>
+                            <v-row>
+                                <v-col>{{ $t('History.EnergyUsed') }}</v-col>
+                                <v-col class="text-right">{{ Math.round(detailsDialog.item.energy_used) }} Wh</v-col>
+                            </v-row>
+                        </template>
                         <template
                             v-if="
                                 'metadata' in detailsDialog.item &&
